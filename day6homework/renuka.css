@@ -1,0 +1,27 @@
+h1{
+			text-align: center;
+		}
+		h2{
+			text-align: center;
+		}
+		button {
+  background-color: green;
+  color: white;
+  padding: 14px 20px;
+  margin: 2px;
+  width: 30%;
+}
+.container1{
+	background-color: lightyellow;
+	font: 20px;
+	text-align: center;
+	float:left;
+	padding:235px 235px;
+}
+.container2{
+	background-color: lightpink;
+	font: 20px;
+	text-align: center;
+	float:right;
+	padding:180px 180px;
+}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+</head>
+<body>
+  <p id='mango'></p>
+
+  <script>
+    const fruits = ["Banana", "Orange", "Apple", "Mango"];
+    let size = fruits.length;
+    document.write("length: "+size);//length()
+    document.write("<br>");
+    document.write(fruits.toString());//toString()
+    document.write("<br>");
+    let h1=fruits.at(2);//at
+    document.write(h1);
+     document.write("<br>");
+    let h2=fruits[3];
+    document.write(h2);//to access using []
+    document.write("<br>");
+    document.write(fruits.join(" * "));//join
+    document.write("<br>");
+    document.write(fruits);
+    document.write("<br>");
+    document.write(fruits.pop());//pop
+    document.write("<br>");
+    document.write(fruits);
+    document.write("<br>");
+    fruits.push("kiwi");//push
+    document.write(fruits);
+    document.write("<br>");
+    document.write(fruits.shift());//shift
+    document.write("<br>");
+    document.write(fruits);
+    document.write("<br>");
+    fruits.unshift("Lemon");//unshift
+    document.write(fruits);
+    document.write("<br>");
+    fruits[0]="watermelon";//change
+    document.write(fruits);
+    document.write("<br>");
+    fruits[fruits.length]="papaya";//adding
+    document.write(fruits);
+    document.write("<br>");
+    delete fruits[3];//delete
+    document.write(fruits);
+    document.write("<br>");
+    var b=['email','name','id'];
+    var c=(fruits.concat(b));//concat
+    document.write(c);
+    document.write("<br>");
+    var d=['alas','jack','john'];
+    var e=fruits.concat(b,d);
+    document.write(e);
+    document.write("<br>");
+    var f=d.concat('johnson');
+    document.write(f);
+    document.write("<br>");
+    fruits.copyWithin(3,0);//copywithin
+    document.write(fruits);
+    document.write("<br>");
+    fruits.copyWithin(2,0);
+    const myArr = [[1,2],[3,4],[5,6]];
+    const newArr = myArr.flat();//flat()
+    document.write(newArr);
+    document.write("<br>");
+    fruits.splice(2, 0, "Lemon", "Kiwi");
+    document.write(fruits);
+    document.write("<br>");
+    fruits.splice(0, 1);
+    const months = ["Jan", "Feb", "Mar", "Apr"];
+    const spliced = months.toSpliced(0, 1);
+    document.write(spliced);
+    document.write("<br>");
+    var citrus = fruits.slice(1);
+    document.write(fruits);
+  </script>
+</body>
+</html>
