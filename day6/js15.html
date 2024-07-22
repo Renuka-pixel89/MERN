@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+</head>
+<body>
+  Enter number:<input type="number" id="myage" value="">
+  <button onclick="lemon()">show me</button>
+  <p id="mango"></p>
+  <script>
+    function lemon()
+    {
+      var lem=document.getElementById('myage').value;
+      var change=Number(lem);
+      //document.write(typeof(change));
+      if(Number.isInteger(change))
+      {
+        document.getElementById('mango').innerHTML="yes am integer";
+      }
+      else
+      {
+        document.getElementById('mango').innerHTML="no am float";
+
+      }
+      
+    }
+
+  </script>
+</body>
+</html>

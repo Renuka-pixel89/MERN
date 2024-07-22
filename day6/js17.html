@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+</head>
+<body>
+  <p id='mango'></p>
+  
+  <script>
+    const fruits = ["Banana", "Orange", "Apple", "Mango"];
+    let size = fruits.length;
+    document.write("length: "+size);//length()
+    document.write("<br>");
+    document.write(fruits.toString());//toString()
+    document.write("<br>");
+    let h1=fruits.at(2);//at
+    document.write(h1);
+     document.write("<br>");
+    let h2=fruits[3];
+    document.write(h2);//to access using []
+    document.write("<br>");
+    document.write(fruits.join(" * "));//join
+    document.write("<br>");
+    document.write(fruits);
+    document.write("<br>");
+    document.write(fruits.pop());//pop
+    document.write("<br>");
+    document.write(fruits);
+    document.write("<br>");
+    fruits.push("kiwi");//push
+    document.write(fruits);
+    document.write("<br>");
+    document.write(fruits.shift());//shift
+    document.write("<br>");
+    document.write(fruits);
+    document.write("<br>");
+    fruits.unshift("Lemon");//unshift
+    document.write(fruits);
+    document.write("<br>");
+    fruits[0]="watermelon";//change
+    document.write(fruits);
+    document.write("<br>");
+    fruits[fruits.length]="papaya";//adding
+    document.write(fruits);
+    document.write("<br>");
+    delete fruits[3];//delete
+    document.write(fruits);
+    document.write("<br>");
+    var b=['email','name','id'];
+    var c=(fruits.concat(b));//concat
+    document.write(c);
+    document.write("<br>");
+    var d=['alas','jack','john'];
+    var e=fruits.concat(b,d);
+    document.write(e);
+    document.write("<br>");
+    var f=d.concat('johnson');
+    document.write(f);
+    document.write("<br>");
+    fruits.copyWithin(3,0);//copywithin
+    document.write(fruits);
+     fruits.copyWithin(2,0);
+  </script>
+</body>
+</html>
