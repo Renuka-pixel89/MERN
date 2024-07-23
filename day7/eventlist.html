@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+</head>
+<body>
+  Enter your name: <input type="text" id="fname" onkeydown="myfunction()">
+  
+  <script>
+  function myfunction()
+  {
+    let x=document.getElementById('fname');
+    //alert("while releasing the key");
+    //x.value = x.value.toUpperCase();
+    document.getElementById("fname").style.backgroundColor = "red"
+  }
+</script>
+</body>
+</html>
