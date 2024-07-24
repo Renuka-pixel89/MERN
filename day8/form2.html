@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<title>JavaScript Form Validation using a sample registration form</title>
+<meta name="keywords" content="example, JavaScript Form Validation, Sample registration form" />
+<meta name="description" content="This document is an example of JavaScript Form Validation using a sample registration form. " />
+<link rel='stylesheet' href='formvalidation.css' type='text/css' />
+</head>
+
+
+<body onload="document.registration1.username.focus();">
+<h1>Form</h1>
+Use tab keys to move from one input field to the next.
+<div class="container">
+<form name='registration1' id="renuka" onSubmit="return formValidation();">
+<ul>
+<li><label for="username">User Name:</label></li>
+<li><input type="text" name="username" size="12"></li>
+<li><label for="age">Age:</label></li>
+<li><input type="number" name="age" size="12"></li>
+<li><label for="pincode">Pin Code:</label></li>
+<li><input type="number" name="pincode" size="12"></li>
+<li><label for="panno">PAN No:</label></li>
+<li><input type="text" name="panno" size="15" maxlength="10"></li>
+<li><label for="password">Password:</label></li>
+<li><input type="password" name="password" size="15"></li>
+<li><label for="phoneno">Phone No</label></li>
+<li><input type="number" name="phoneno" size="15"></li>
+<li><input type="submit" name="submit" value="Submit" /></li>
+</ul>
+</form>
+</div>
+</body>
+</html>
