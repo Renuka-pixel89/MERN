@@ -1,0 +1,302 @@
+1.$expr:
+  db.employees.insertMany([{
+  "_id": 1,
+  "name": "Alice",
+  "age": 30,
+  "salary": 70000,
+  "yearsAtCompany": 5
+},
+{
+  "_id": 2,
+  "name": "Bob",
+  "age": 25,
+  "salary": 50000,
+  "yearsAtCompany": 2
+},
+{
+  "_id": 3,
+  "name": "Charlie",
+  "age": 28,
+  "salary": 60000,
+  "yearsAtCompany": 3
+}])
+
+db.employees.find([{
+  $expr: { $gt: ["$salary", 60000] }
+})
+
+2.$lookup:
+db.departments.insertMany({
+  "_id": "d1",
+  "departmentName": "Engineering"
+},
+{
+  "_id": "d2",
+  "departmentName": "Marketing"
+}])
+
+db.employees.aggregate([
+  {
+    $lookup: {
+      from: "departments",          // The collection to join with
+      localField: "departmentId",   // Field from the `employees` collection
+      foreignField: "_id",          // Field from the `departments` collection
+      as: "department"              // The name of the field to add in the output
+    }
+  }
+])
+
+3.$project:
+db.employees.aggregate([
+  {
+    $lookup: {
+      from: "departments",          // The collection to join with
+      localField: "departmentId",   // Field from the `employees` collection
+      foreignField: "_id",          // Field from the `departments` collection
+      as: "department"              // The name of the field to add in the output
+    }
+  },
+  {
+    $project: {
+      name: 1,                      // Include the `name` field
+      salary: 1,                    // Include the `salary` field
+      departmentName: {             // Add a new field `departmentName`
+        $arrayElemAt: ["$department.departmentName", 0] // Extract the department name from the array
+      },
+      _id: 0                        // Exclude the `_id` field from the output
+    }
+  }
+])
+
+4.$merge:
+db.employees.aggregate([
+  {
+    $lookup: {
+      from: "departments",          // The collection to join with
+      localField: "departmentId",   // Field from the `employees` collection
+      foreignField: "_id",          // Field from the `departments` collection
+      as: "department"              // The name of the field to add in the output
+    }
+  },
+  {
+    $project: {
+      name: 1,                      // Include the `name` field
+      salary: 1,                    // Include the `salary` field
+      departmentName: {             // Add a new field `departmentName`
+        $arrayElemAt: ["$department.departmentName", 0] // Extract the department name from the array
+      },
+      _id: 0                        // Exclude the `_id` field from the output
+    }
+  },
+  {
+    $merge: {
+      into: "employees_with_departments", // The target collection
+      whenMatched: "merge",               // How to handle existing documents
+      whenNotMatched: "insert"            // How to handle documents not in the target collection
+    }
+  }
+])
+
+5.$limit:
+db.employees.aggregate([
+  {
+    $lookup: {
+      from: "departments",          // The collection to join with
+      localField: "departmentId",   // Field from the `employees` collection
+      foreignField: "_id",          // Field from the `departments` collection
+      as: "department"              // The name of the field to add in the output
+    }
+  },
+  {
+    $project: {
+      name: 1,                      // Include the `name` field
+      salary: 1,                    // Include the `salary` field
+      departmentName: {             // Add a new field `departmentName`
+        $arrayElemAt: ["$department.departmentName", 0] // Extract the department name from the array
+      },
+      _id: 0                        // Exclude the `_id` field from the output
+    }
+  },
+  {
+    $limit: 2                      // Limit the result to 2 documents
+  }
+])
+
+5.$search:
+db.employees.aggregate([
+  {
+    $search: {
+      index: "default", // Name of the search index
+      text: {
+        query: "Alice", // Search query
+        path: "name"    // Field to search in
+      }
+    }
+  },
+  {
+    $lookup: {
+      from: "departments",          // The collection to join with
+      localField: "departmentId",   // Field from the `employees` collection
+      foreignField: "_id",          // Field from the `departments` collection
+      as: "department"              // The name of the field to add in the output
+    }
+  },
+  {
+    $project: {
+      name: 1,                      // Include the `name` field
+      salary: 1,                    // Include the `salary` field
+      departmentName: {             // Add a new field `departmentName`
+        $arrayElemAt: ["$department.departmentName", 0] // Extract the department name from the array
+      },
+      _id: 0                        // Exclude the `_id` field from the output
+    }
+  }
+])
+6:$sort:
+db.employees.aggregate([
+  {
+    $lookup: {
+      from: "departments",          // The collection to join with
+      localField: "departmentId",   // Field from the `employees` collection
+      foreignField: "_id",          // Field from the `departments` collection
+      as: "department"              // The name of the field to add in the output
+    }
+  },
+  {
+    $project: {
+      name: 1,                      // Include the `name` field
+      salary: 1,                    // Include the `salary` field
+      departmentName: {             // Add a new field `departmentName`
+        $arrayElemAt: ["$department.departmentName", 0] // Extract the department name from the array
+      },
+      _id: 0                        // Exclude the `_id` field from the output
+    }
+  },
+  {
+    $sort: { salary: -1 }          // Sort by `salary` in descending order
+  }
+])
+
+8.$sortByCount:
+db.employees.aggregate([
+  {
+    $lookup: {
+      from: "departments",          // The collection to join with
+      localField: "departmentId",   // Field from the `employees` collection
+      foreignField: "_id",          // Field from the `departments` collection
+      as: "department"              // The name of the field to add in the output
+    }
+  },
+  {
+    $unwind: "$department"          // Deconstruct the `department` array
+  },
+  {
+    $group: {
+      _id: "$department.departmentName", // Group by `departmentName`
+      count: { $sum: 1 }               // Count the number of employees in each department
+    }
+  },
+  {
+    $sortByCount: "$count"          // Sort by the count in descending order
+  }
+])
+
+9.$skip:
+db.employees.aggregate([
+  {
+    $lookup: {
+      from: "departments",          // The collection to join with
+      localField: "departmentId",   // Field from the `employees` collection
+      foreignField: "_id",          // Field from the `departments` collection
+      as: "department"              // The name of the field to add in the output
+    }
+  },
+  {
+    $project: {
+      name: 1,                      // Include the `name` field
+      salary: 1,                    // Include the `salary` field
+      departmentName: {             // Add a new field `departmentName`
+        $arrayElemAt: ["$department.departmentName", 0] // Extract the department name from the array
+      },
+      _id: 0                        // Exclude the `_id` field from the output
+    }
+  },
+  {
+    $skip: 1                       // Skip the first 1 document
+  },
+  {
+    $limit: 2                      // Limit the result to the next 2 documents
+  }
+])
+
+10.$group:
+db.employees.aggregate
+[
+  { "_id": 1, "name": "Alice", "age": 30, "salary": 70000, "yearsAtCompany": 5, "departmentId": "d1" },
+  { "_id": 2, "name": "Bob", "age": 25, "salary": 50000, "yearsAtCompany": 2, "departmentId": "d2" },
+  { "_id": 3, "name": "Charlie", "age": 28, "salary": 60000, "yearsAtCompany": 3, "departmentId": "d1" }
+]
+db.departments.aggregate
+[
+  { "_id": "d1", "departmentName": "Engineering" },
+  { "_id": "d2", "departmentName": "Marketing" }
+]
+
+
+db.employees.aggregate([
+  {
+    $lookup: {
+      from: "departments",          // The collection to join with
+      localField: "departmentId",   // Field from the `employees` collection
+      foreignField: "_id",          // Field from the `departments` collection
+      as: "department"              // The name of the field to add in the output
+    }
+  },
+  {
+    $unwind: "$department"          // Deconstruct the `department` array
+  },
+  {
+    $group: {
+      _id: "$department.departmentName",  // Group by department name
+      totalSalary: { $sum: "$salary" },   // Calculate total salary
+      employeeCount: { $sum: 1 }          // Count the number of employees
+    }
+  },
+  {
+    $project: {
+      _id: 0,                            // Exclude the `_id` field from the output
+      departmentName: "$_id",            // Rename `_id` to `departmentName`
+      totalSalary: 1,                    // Include the `totalSalary` field
+      employeeCount: 1                   // Include the `employeeCount` field
+    }
+  }
+])
+
+
+10.$out:
+db.employees.aggregate([
+  {
+    $lookup: {
+      from: "departments",          // The collection to join with
+      localField: "departmentId",   // Field from the `employees` collection
+      foreignField: "_id",          // Field from the `departments` collection
+      as: "department"              // The name of the field to add in the output
+    }
+  },
+  {
+    $unwind: "$department"          // Deconstruct the `department` array
+  },
+  {
+    $project: {
+      name: 1,                      // Include the `name` field
+      age: 1,                       // Include the `age` field
+      salary: 1,                    // Include the `salary` field
+      yearsAtCompany: 1,            // Include the `yearsAtCompany` field
+      departmentName: "$department.departmentName", // Add `departmentName` field
+      _id: 0                        // Exclude the `_id` field from the output
+    }
+  },
+  {
+    $out: "employees_with_departments" // The target collection
+  }
+])
