@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { max-width: 400px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
+        .hidden { display: none; }
+        .timer { font-size: 1.2em; color: red; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Form -->
+        <div id="loginForm">
+            <h2>Login</h2>
+            <form id="login">
+                <label for="email">Email:</label>
+                <input type="email" id="email" required><br><br>
+                <label for="password">Password:</label>
+                <input type="password" id="password" required><br><br>
+                <button type="button" onclick="login()">Login</button>
+            </form>
+        </div>
+
+        <!-- Question Form -->
+        <div id="questionForm" class="hidden">
+        <h2>Welcome!</h2>
+            <div class="timer" id="timer">1:00</div>
+            <form id="questions">
+                <label for="q1">Question 1: 2 + 2 = ?</label>
+                <input type="text" id="q1" required><br><br>
+                <label for="q2">Question 2: 3 + 5 = ?</label>
+                <input type="text" id="q2" required><br><br>
+                <button type="button" onclick="submitQuestions()">Submit</button>
+            </form>
+            <div id="result" class="hidden"></div>
+        </div>
+    </div>
+
+    <script>
+        let timerInterval;
+        function login() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('questionForm').classList.remove('hidden');
+
+            let time = 60;
+            document.getElementById('timer').innerText = 1:${time < 10 ? '0' : ''}${time};
+
+            timerInterval = setInterval(() => {
+                time--;
+                document.getElementById('timer').innerText = 1:${time < 10 ? '0' : ''}${time};
+                if (time <= 0) {
+                    clearInterval(timerInterval);
+                    alert('Time is up! Returning to login.');
+                    document.getElementById('questionForm').classList.add('hidden');
+                    document.getElementById('loginForm').classList.remove('hidden');
+                }
+            }, 1000);
+        }
+
+        function submitQuestions() {
+            const q1 = document.getElementById('q1').value;
+             const q2 = document.getElementById('q2').value;
+            let score = 0;
+
+            if (q1 === '4') score++;
+            if (q2 === '8') score++;
+
+            let resultMessage;
+            if (score === 2) {
+                resultMessage = '2 out of 2';
+            } else if (score === 1) {
+                resultMessage = '1 out of 2. Better luck next time!';
+            } else {
+                resultMessage = '0 out of 2. Better luck next time!';
+            }
+
+            document.getElementById('result').innerText = resultMessage;
+            document.getElementById('result').classList.remove('hidden');
+            clearInterval(timerInterval); // Stop the timer
+        }
+    </script>
+</body>
+</html>
