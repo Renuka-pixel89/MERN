@@ -5,7 +5,7 @@ const express = require("express"),
     LocalStrategy = require("passport-local"),
     passportLocalMongoose = 
         require("passport-local-mongoose");
-const Employee = require("./model/user");
+const Login = require("./model/timer");
 let app = express();
 
 mongoose.connect("mongodb://localhost/LoginForm");
@@ -21,38 +21,38 @@ app.use(require("express-session")({
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.use(new LocalStrategy(Employee.authenticate()));
-passport.serializeUser(Employee.serializeUser());
-passport.deserializeUser(Employee.deserializeUser());
+passport.use(new LocalStrategy(Login.authenticate()));
+passport.serializeUser(Login.serializeUser());
+passport.deserializeUser(Login.deserializeUser());
 
 //=====================
 // ROUTES
 //=====================
 
 // Showing home page
-app.get("/home", function (req, res) {
+app.get("/", function (req, res) {
     res.render("home");
 });
 
- /*Showing secret page
+// Showing secret page
 app.get("/login", isLoggedIn, function (req, res) {
     res.render("login");
-});*/
+});
 
-//Showing register formisLoggedIn
+// Showing register formisLoggedIn
 app.get("/welcome", function (req, res) {
     res.render("welcome");
 });
 
-//Handling user signup
+/* Handling user signup
 app.post("/login", async (req, res) => {
-    const user = await Employee.create({
+    const user = await Country.create({
       email: req.body.email,
       password: req.body.password
     });
   
     return res.status(200).json(user);
-  });
+  });*/
 
 //Showing login form
 app.get("/login", function (req, res) {
@@ -63,13 +63,13 @@ app.get("/login", function (req, res) {
 app.post("/login", async function(req, res){
     try {
         // check if the user exists
-        const user = await Employee.findOne({ username: req.body.username });
+        const user = await Login.findOne({ username: req.body.username });
         if (user) {
           //check if password matches
           const result = req.body.password === user.password;
-          if (user.result) {
+          if (result) {
             res.render("welcome");
-          }   else {
+          } else {
             res.status(400).json({ error: "password doesn't match" });
           }
         } else {
@@ -84,7 +84,7 @@ app.post("/login", async function(req, res){
 app.get("/logout", function (req, res) {
     req.logout(function(err) {
         if (err) { return next(err); }
-        res.redirect('/home');
+        res.redirect('/');
       });
 });
 
@@ -96,6 +96,6 @@ function isLoggedIn(req, res, next) {
 }
 
 
-app.listen(4000, function () {
+app.listen(3000, function () {
     console.log("Server Has Started!");
 });
